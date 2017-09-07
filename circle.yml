@@ -30,7 +30,7 @@ jobs:
           name: "Build"
           pwd: ~/cpp-ethereum/build
           command: |
-            ninja -j6
+            ninja -j8
 
       - cache-save:
           name: "Save dependencies cache"
