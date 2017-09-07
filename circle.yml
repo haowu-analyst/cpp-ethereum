@@ -2,7 +2,7 @@ version: 2
 jobs:
   build:
     docker:
-      - image: ethereum/cpp-build-env
+      - image: ethereum/cpp-build-env:experimental
     working_directory: ~/cpp-ethereum
     steps:
       - checkout
@@ -13,13 +13,13 @@ jobs:
 
       - cache-restore:
           name: "Restore dependencies cache"
-          key: deps-2-{{ checksum "cmake/ProjectJsonRpcCpp.cmake" }}
+          key: deps-3-{{ checksum "cmake/ProjectJsonRpcCpp.cmake" }}
 
       - run:
           name: "Configure"
           command: |
             mkdir build && cd build
-            cmake .. -DCOVERAGE=ON
+            cmake .. -G Ninja -DCOVERAGE=ON -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_C_COMPILER=clang
 
       - run:
           name: "Upload Hunter cache"
@@ -28,12 +28,13 @@ jobs:
 
       - run:
           name: "Build"
+          pwd: ~/cpp-ethereum/build
           command: |
-            cmake --build build -- -j4
+            ninja
 
       - cache-save:
           name: "Save dependencies cache"
-          key: deps-2-{{ checksum "cmake/ProjectJsonRpcCpp.cmake" }}
+          key: deps-3-{{ checksum "cmake/ProjectJsonRpcCpp.cmake" }}
           paths:
             - deps
 
