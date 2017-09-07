@@ -13,12 +13,12 @@ jobs:
 
       - cache-restore:
           name: "Restore dependencies cache"
-          key: deps-3-{{ checksum "cmake/ProjectJsonRpcCpp.cmake" }}
+          key: deps-4-{{ checksum "cmake/ProjectJsonRpcCpp.cmake" }}
 
       - run:
           name: "Configure"
           command: |
-            mkdir build && cd build
+            mkdir -p build && cd build
             cmake .. -G Ninja -DCOVERAGE=ON -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_C_COMPILER=clang
 
       - run:
@@ -30,13 +30,13 @@ jobs:
           name: "Build"
           pwd: ~/cpp-ethereum/build
           command: |
-            ninja
+            ninja -j4
 
       - cache-save:
           name: "Save dependencies cache"
-          key: deps-3-{{ checksum "cmake/ProjectJsonRpcCpp.cmake" }}
+          key: deps-4-{{ checksum "cmake/ProjectJsonRpcCpp.cmake" }}
           paths:
-            - deps
+            - ~/cpp-ethereum/build/deps
 
       - store_artifacts:
           path: build/eth/eth
