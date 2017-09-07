@@ -68,5 +68,4 @@ jobs:
           name: "Code coverage"
           pwd: ~/cpp-ethereum/build
           command: |
-            cmake --build . --target coverage.data
-            bash <(curl -s https://raw.githubusercontent.com/codecov/codecov-bash/d8016a07d67d813f98afdbaf98dc4f46d9806118/codecov) -X fix -f coverage.data
+            bash <(curl -s https://codecov.io/bash) -X fix
